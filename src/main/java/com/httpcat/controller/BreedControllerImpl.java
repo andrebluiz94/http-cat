@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("api/v1")
 public class BreedControllerImpl implements BreedController {
@@ -24,7 +26,7 @@ public class BreedControllerImpl implements BreedController {
 	}
 
 	@GetMapping("busca")
-	public ResponseEntity<RacaDto[]> getRaca(@RequestParam String raca){
+	public ResponseEntity<RacaDto[]> getRaca(@RequestParam Map<String,String> raca){
 		return service.getRaca(raca);
 	}
 

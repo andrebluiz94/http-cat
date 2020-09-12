@@ -6,6 +6,6 @@ import org.springframework.http.HttpEntity;
 
 public interface HeaderDeafault {
 
-	String getUrl();
-	HttpEntity getRequest();
+	HttpEntity getHeaders();
+	HttpEntity getHeaders(String key);
 }
