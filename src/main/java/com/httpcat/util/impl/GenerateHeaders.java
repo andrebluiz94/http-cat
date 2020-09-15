@@ -1,6 +1,7 @@
-package com.httpcat.security.Abstract;
+package com.httpcat.util.impl;
 
-import com.httpcat.security.HeaderDeafault;
+import com.httpcat.security.Abstract.AuthorizationImpl;
+import com.httpcat.util.HeaderDeafault;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

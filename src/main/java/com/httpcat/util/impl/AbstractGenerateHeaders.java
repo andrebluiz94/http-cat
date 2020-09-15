@@ -1,4 +1,4 @@
-package com.httpcat.security.Abstract;
+package com.httpcat.util.impl;
 
 import org.springframework.http.HttpEntity;
 

@@ -8,6 +8,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class CreateUrlImpl implements CreateUrl {
@@ -22,6 +23,7 @@ public class CreateUrlImpl implements CreateUrl {
 	private String bucasRacaByName;
 
 	private static final String NAME_QUERY = "name";
+	private static final String QUERY = "q";
 
 	@Override
 	public String getUrl() {
@@ -33,20 +35,24 @@ public class CreateUrlImpl implements CreateUrl {
 
 	@Override
 	public String getUrl(String buscaPeloNome) {
-		UriComponentsBuilder url = UriComponentsBuilder
+		String origin = UriComponentsBuilder
 				.fromHttpUrl(getUrlDominio.trim())
 				.path(bucasRacaByName.trim())
-				.queryParam(NAME_QUERY, buscaPeloNome.trim());
-		return url.toUriString();
+				.queryParam(QUERY, buscaPeloNome.trim())
+				.toUriString();
+		System.out.println(origin);
+		return origin;
 	}
 
 	@Override
 	public String getUrl(Map<String, String> raca) {
-		List racaLista = Arrays.asList(raca.keySet());
+		Set<String> listParams = raca.keySet();
 		UriComponentsBuilder urlBuilder = UriComponentsBuilder
 				.fromHttpUrl(getUrlDominio.trim())
 				.path(getUrlPath.trim());
-		racaLista.stream().forEach((v) -> urlBuilder.queryParam(String.valueOf(v), raca.get(v)));
+		for (String key : listParams){
+			urlBuilder.queryParam(key, raca.get(key));
+		}
 		return urlBuilder.toUriString();
 	}
 }

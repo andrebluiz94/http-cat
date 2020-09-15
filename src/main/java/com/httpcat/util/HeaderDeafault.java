@@ -1,4 +1,4 @@
-package com.httpcat.security;
+package com.httpcat.util;
 
 
 import org.springframework.beans.factory.annotation.Value;

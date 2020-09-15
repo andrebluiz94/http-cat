@@ -17,16 +17,14 @@ public class CatService {
 
 
 	public ResponseEntity<RacaDto[]> getRaca(String raca) {
-		return clientRacas.getAll(raca, HttpMethod.GET, RacaDto[].class);
+		return clientRacas.getAll(raca, HttpMethod.GET);
 	}
 
-
-
 	public ResponseEntity<RacaDto[]> getAllRacas() {
-		return clientRacas.getAllRacas(RacaDto[].class, HttpMethod.GET);
+		return clientRacas.getAllRacas(HttpMethod.GET);
 	}
 
 	public ResponseEntity<RacaDto[]> getRaca(Map<String, String> raca) {
-		return clientRacas.getAll(raca, HttpMethod.GET, RacaDto[].class);
+		return clientRacas.getAll(raca, HttpMethod.GET);
 	}
 }

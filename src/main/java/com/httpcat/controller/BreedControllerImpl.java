@@ -15,19 +15,26 @@ import java.util.Map;
 @RequestMapping("api/v1")
 public class BreedControllerImpl implements BreedController {
 
-
 	@Autowired
 	private CatService service;
 
+	//busca all classes
 	@GetMapping("/racas")
 	@Override
 	public ResponseEntity<RacaDto[]> getRacas() {
 		return service.getAllRacas();
 	}
 
+	//busca pela pela raça
 	@GetMapping("busca")
-	public ResponseEntity<RacaDto[]> getRaca(@RequestParam Map<String,String> raca){
+	@Override
+	public ResponseEntity<RacaDto[]> getRaca(@RequestParam Map<String, String> raca) {
 		return service.getRaca(raca);
 	}
 
+	//origem
+	@GetMapping("busca_origem")
+	public ResponseEntity<RacaDto[]> getRaca(@RequestParam("origem") String raca2) {
+		return service.getRaca(raca2);
+	}
 }
