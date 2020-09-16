@@ -1,12 +1,13 @@
-package com.httpcat.client;
+package com.httpcat.client.impl;
 
+import com.httpcat.client.AbstractRestClient;
 import com.httpcat.dto.RacaDto;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClientRacasImpl extends AbstractRestClient <RacaDto[]> {
+public class ClientRacasImpl extends AbstractRestClient<RacaDto[]> {
 
 	@Override
 	public ResponseEntity<RacaDto[]> getAll(String itens, HttpMethod method) {

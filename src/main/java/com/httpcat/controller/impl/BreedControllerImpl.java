@@ -1,5 +1,6 @@
-package com.httpcat.controller;
+package com.httpcat.controller.impl;
 
+import com.httpcat.controller.BreedController;
 import com.httpcat.dto.RacaDto;
 import com.httpcat.service.CatService;
 import org.springframework.beans.factory.annotation.Autowired;

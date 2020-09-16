@@ -1,6 +1,6 @@
 package com.httpcat.service;
 
-import com.httpcat.client.ClientRacasImpl;
+import com.httpcat.client.impl.ClientRacasImpl;
 import com.httpcat.dto.RacaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
