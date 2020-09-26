@@ -1,12 +1,13 @@
 package com.httpcat.controller;
 
-import com.httpcat.dto.RacaDto;
+import com.httpcat.dto.RacaDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 public interface BreedController {
-	ResponseEntity<RacaDto[]> getRacas();
-	public ResponseEntity<RacaDto[]> getRaca(@RequestParam Map<String,String> raca);
+	ResponseEntity<List<RacaDTO>> getRacas();
+	public ResponseEntity<List<RacaDTO>> getRaca(@RequestParam Map<String,String> raca);
 }

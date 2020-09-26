@@ -1,29 +1,25 @@
 package com.httpcat.util.impl;
 
-import com.httpcat.util.CreateUrl;
+import com.httpcat.generic.config.HttpConfiguration;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Component
-public class CreateUrlImpl implements CreateUrl {
+
+public abstract class ConfigurationImpl implements HttpConfiguration {
 
 	@Value("${cat.url.racas.dominio}")
-	private String getUrlDominio;
+	protected String getUrlDominio;
 
 	@Value("${cat.url.racas.path}")
-	private String getUrlPath;
+	protected String getUrlPath;
 
 	@Value("${cat.url.racas.path.search-by-name}")
-	private String bucasRacaByName;
+	protected String bucasRacaByName;
 
-	private static final String NAME_QUERY = "name";
-	private static final String QUERY = "q";
+	protected static final String QUERY = "q";
 
 	@Override
 	public String getUrl() {
@@ -50,9 +46,17 @@ public class CreateUrlImpl implements CreateUrl {
 		UriComponentsBuilder urlBuilder = UriComponentsBuilder
 				.fromHttpUrl(getUrlDominio.trim())
 				.path(getUrlPath.trim());
-		for (String key : listParams){
+		for (String key : listParams) {
 			urlBuilder.queryParam(key, raca.get(key));
 		}
 		return urlBuilder.toUriString();
+	}
+
+	public String builderQueryParams(Map<String, String> raca, UriComponentsBuilder url) {
+		Set<String> listParams = raca.keySet();
+		for (String key : listParams) {
+			url.queryParam(key, raca.get(key));
+		}
+		return url.toUriString();
 	}
 }

@@ -1,26 +1,12 @@
-package com.httpcat.Entity;
+package com.httpcat.dto;
 
-import javax.persistence.*;
 
-@Entity
-public class Cat {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long idCat;
-	@Column(name = "idCat")
+
+public class RacaDTO {
 	private String id;
 	private String name;
 	private String temperament;
 	private String origin;
-
-	public Long getIdCat() {
-		return idCat;
-	}
-
-	public void setIdCat(Long idCat) {
-		this.idCat = idCat;
-	}
 
 	public String getId() {
 		return id;
@@ -56,12 +42,11 @@ public class Cat {
 
 	@Override
 	public String toString() {
-		return "Cat{" +
-				"idCat=" + idCat +
-				", id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", temperament='" + temperament + '\'' +
-				", origin='" + origin + '\'' +
-				'}';
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("id: ").append(id);
+		stringBuilder.append("name: ").append(name);
+		stringBuilder.append("temperament: ").append(temperament);
+		stringBuilder.append("origin: ").append(origin);
+		return stringBuilder.toString();
 	}
 }
