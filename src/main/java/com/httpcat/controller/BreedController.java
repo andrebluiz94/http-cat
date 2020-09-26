@@ -9,5 +9,5 @@ import java.util.Map;
 
 public interface BreedController {
 	ResponseEntity<List<RacaDTO>> getRacas();
-	public ResponseEntity<List<RacaDTO>> getRaca(@RequestParam Map<String,String> raca);
+
 }

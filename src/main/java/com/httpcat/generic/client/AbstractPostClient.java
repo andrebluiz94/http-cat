@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.ParameterizedType;
+
 
 public abstract class AbstractPostClient<RequestType, ResponseType, Configuration extends HttpConfiguration> {
 
@@ -17,14 +19,16 @@ public abstract class AbstractPostClient<RequestType, ResponseType, Configuratio
 	private Configuration configuration;
 	private static Integer TYPE_RETURN_CALLER = 1;
 
-	public ResponseEntity<ResponseType> postRequest(RequestType requestType) {
+
+
+	public ResponseType postRequest(RequestType requestType) {
 		Class<ResponseType> typeReturn = (Class<ResponseType>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[TYPE_RETURN_CALLER];
-		HttpEntity entity = new HttpEntity(requestType, configuration.buildHeadersAuthentication().getHeaders());
+		HttpEntity entity = new HttpEntity(requestType, configuration.buildHeadersAuthentication());
 		return restTemplate.exchange(
 				configuration.getUrl(),
 				HttpMethod.POST,
 				entity,
 				typeReturn
-		);
+		).getBody();
 	}
 }

@@ -1,42 +1,32 @@
 package com.httpcat.controller.impl;
 
-import com.httpcat.controller.BreedController;
-import com.httpcat.dto.RacaDTO;
-import com.httpcat.service.CatService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.httpcat.http.raca.dto.ResponseRacaGato;
+import com.httpcat.http.GetCatImagem.dto.ResponseRacaGatoImagem;
+import com.httpcat.http.raca.service.BuscarRacasGatoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1")
-public class BreedControllerImpl implements BreedController {
+public class BreedControllerImpl {
 
-	@Autowired
-	private CatService service;
+    private final BuscarRacasGatoService service;
 
-	//busca all classes
-	@GetMapping("/racas")
-	@Override
-	public ResponseEntity<List<RacaDTO>> getRacas() {
-		return service.getAllRacas();
-	}
+    public BreedControllerImpl(BuscarRacasGatoService service) {
+        this.service = service;
+    }
 
-	//busca pela pela raça
-	@GetMapping("busca")
-	@Override
-	public ResponseEntity<List<RacaDTO>> getRaca(@RequestParam Map<String, String> raca) {
-		return service.getRaca(raca);
-	}
+    @GetMapping("/racas")
+    public List<ResponseRacaGato> getRacas() {
+        return service.buscar();
+    }
 
-	//origem
-	@GetMapping("busca_origem")
-	public ResponseEntity<List<RacaDTO>> getRaca(@RequestParam("origem") String raca2) {
-		return service.getRaca(raca2);
-	}
+    @GetMapping("/imagem/chapeu")
+    public List<ResponseRacaGatoImagem> getAndSalvem(){
+        return service.getAndSave();
+    }
+
 }
