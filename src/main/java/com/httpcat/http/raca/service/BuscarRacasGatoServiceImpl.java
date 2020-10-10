@@ -31,8 +31,6 @@ public class BuscarRacasGatoServiceImpl
     }
 
     private List<ResponseRacaGato> convertArrayToList(ResponseRacaGato[] responseRacaGato) {
-        List<ResponseRacaGato> responseRacaGatoList = new ArrayList<>();
-        responseRacaGatoList.addAll(Arrays.asList(responseRacaGato));
-        return responseRacaGatoList;
+        return new ArrayList<>(Arrays.asList(responseRacaGato));
     }
 }
