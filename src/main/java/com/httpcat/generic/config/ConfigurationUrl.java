@@ -1,15 +1,16 @@
 package com.httpcat.generic.config;
 
+import com.httpcat.generic.expcetion.UrlBuilderException;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
+
 @Component
-public abstract class ConfigurationUrl extends BuilderHeaders implements HttpConfiguration {
+public abstract class ConfigurationUrl extends BuilderHeadersAuthentication implements HttpConfiguration {
 
 	protected String url;
 
 	@Override
 	public String getUrl() {
-		Assert.notNull(url, "Url não pode ser NULLA");
+		if(url==null) throw new UrlBuilderException("Erro ao settar a url");
 		return this.url;
 	}
 }

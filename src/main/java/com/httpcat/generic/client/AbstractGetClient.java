@@ -3,6 +3,7 @@ package com.httpcat.generic.client;
 import com.httpcat.generic.config.HttpConfiguration;
 import com.httpcat.generic.expcetion.GetResponseException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 
@@ -14,14 +15,11 @@ import java.lang.reflect.ParameterizedType;
 @Slf4j
 public abstract class AbstractGetClient<RequestType, ResponseType, Configuration extends HttpConfiguration> {
 
-	private final RestTemplate restTemplate;
-	private final Configuration configuration;
+	@Autowired
+	private RestTemplate restTemplate;
+	@Autowired
+	protected Configuration configuration;
 	private static Integer TYPE_RETURN_CALLER = 1;
-
-	public AbstractGetClient(RestTemplate restTemplate, Configuration configuration) {
-		this.restTemplate = restTemplate;
-		this.configuration = configuration;
-	}
 
 	public ResponseType get() {
 		try{

@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class BuilderHeaders implements HttpConfiguration{
+public abstract class BuilderHeadersAuthentication implements HttpConfiguration{
 
 	@Value("${cat.authorization.key}")
 	private String KEY_AUTHORIZATION;

@@ -10,15 +10,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BuscarRacasGatoServiceImpl
         extends AbstractGetClient<RequestRacaGato, ResponseRacaGato[], BuscarRacasGatoConfiguration>
         implements BuscarRacasGatoService{
-
-    public BuscarRacasGatoServiceImpl(RestTemplate restTemplate, BuscarRacasGatoConfiguration configuration) {
-        super(restTemplate, configuration);
-    }
 
     @Override
     public List<ResponseRacaGato> buscar() {
@@ -27,7 +24,7 @@ public class BuscarRacasGatoServiceImpl
     }
 
     @Override
-    public List<ResponseRacaGatoImagem> getAndSave() {
+    public List<ResponseRacaGatoImagem> getAndSave(Map<String, String> expand) {
 
         return null;
     }

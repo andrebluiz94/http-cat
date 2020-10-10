@@ -1,7 +1,12 @@
 package com.httpcat.Entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 public class Cat {
 	@Id
@@ -13,55 +18,4 @@ public class Cat {
 	private String name;
 	private String temperament;
 	private String origin;
-
-	public Long getIdCat() {
-		return idCat;
-	}
-
-	public void setIdCat(Long idCat) {
-		this.idCat = idCat;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getTemperament() {
-		return temperament;
-	}
-
-	public void setTemperament(String temperament) {
-		this.temperament = temperament;
-	}
-
-	public String getOrigin() {
-		return origin;
-	}
-
-	public void setOrigin(String origin) {
-		this.origin = origin;
-	}
-
-	@Override
-	public String toString() {
-		return "Cat{" +
-				"idCat=" + idCat +
-				", id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", temperament='" + temperament + '\'' +
-				", origin='" + origin + '\'' +
-				'}';
-	}
 }
