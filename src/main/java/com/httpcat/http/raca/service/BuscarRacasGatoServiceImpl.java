@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -31,9 +32,7 @@ public class BuscarRacasGatoServiceImpl
 
     private List<ResponseRacaGato> convertArrayToList(ResponseRacaGato[] responseRacaGato) {
         List<ResponseRacaGato> responseRacaGatoList = new ArrayList<>();
-        for (ResponseRacaGato racaGato : responseRacaGato){
-            responseRacaGatoList.add(racaGato);
-        }
+        responseRacaGatoList.addAll(Arrays.asList(responseRacaGato));
         return responseRacaGatoList;
     }
 }
