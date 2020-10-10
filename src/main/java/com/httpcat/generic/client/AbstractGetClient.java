@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,7 +33,7 @@ public abstract class AbstractGetClient<RequestType, ResponseType, Configuration
 					entity,
 					typeReturn
 			).getBody();
-		}catch(HttpStatusCodeException e){
+		}catch(HttpClientErrorException | HttpServerErrorException e){
 			log.error("FAlha ao chamar, ERROR: "+ e);
 			throw new GetResponseException("Falha na chamada Get, ERROR: "+ e);
 		}

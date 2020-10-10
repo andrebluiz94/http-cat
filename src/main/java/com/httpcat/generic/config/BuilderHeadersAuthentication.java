@@ -11,12 +11,11 @@ public abstract class BuilderHeadersAuthentication implements HttpConfiguration{
 
 	@Value("${cat.authorization.key}")
 	private String KEY_AUTHORIZATION;
-	private String KEY_AUTHORIZATION_LABEL = "Authorization";
 
 	@Override
 	public HttpHeaders buildHeadersAuthentication() {
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(KEY_AUTHORIZATION_LABEL, KEY_AUTHORIZATION);
+		headers.add(HttpHeaders.AUTHORIZATION, KEY_AUTHORIZATION);
 		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		return headers;
 	}
