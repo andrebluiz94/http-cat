@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  app:
+    build:
+      dockerfile: spring.Dockerfile
+      context: .
+    image: andre/httpcatspring
+    env_file:
+      - ./env/app.env
+    container_name: spring
+    ports:
+      - "8080:8080"
+    networks:
+      - cat-rede
+    depends_on:
+      - "redis"
+      - "db"
+  redis:
+    image: library/redis:alpine
+    networks:
+      - cat-rede
+  db:
+    image: library/postgres:alpine
+    restart: always
+    networks:
+      - cat-rede
+    env_file:
+      - ./env/postgres.env
+networks:
+  cat-rede:
+    driver: bridge

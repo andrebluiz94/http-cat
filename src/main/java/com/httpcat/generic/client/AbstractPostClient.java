@@ -17,12 +17,16 @@ import java.lang.reflect.ParameterizedType;
 @Slf4j
 public abstract class AbstractPostClient<RequestType, ResponseType, Configuration extends HttpConfiguration> {
 
-	@Autowired
-	private RestTemplate restTemplate;
-	@Autowired
-	private Configuration configuration;
+
+	private final RestTemplate restTemplate;
+	private final Configuration configuration;
 	private static Integer TYPE_RETURN_CALLER = 1;
 
+	@Autowired
+	public AbstractPostClient(RestTemplate restTemplate, Configuration configuration) {
+		this.restTemplate = restTemplate;
+		this.configuration = configuration;
+	}
 
 	public ResponseEntity<ResponseType> postRequest(RequestType requestType) {
 		Class<ResponseType> typeReturn = (Class<ResponseType>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[TYPE_RETURN_CALLER];

@@ -24,4 +24,5 @@ public class BuscarRacasGatoConfigurationImpl extends ConfigurationUrl implement
                 .toUriString();
         return super.getUrl();
     }
+
 }

@@ -1,4 +1,4 @@
-package com.httpcat.dto;
+package com.httpcat.controller.dto;
 
 
 
