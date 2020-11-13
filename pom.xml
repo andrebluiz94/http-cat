@@ -137,6 +137,16 @@
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.4</version>
+				<configuration>
+					<excludes>
+						<exclude>**com.httpcat.SearchCatApplicationTests</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -152,10 +162,10 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.2</version>
 				<reportSets>
 					<reportSet>
 						<reports>
+							<!-- select non-aggregate reports -->
 							<report>report</report>
 						</reports>
 					</reportSet>
