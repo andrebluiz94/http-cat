@@ -43,7 +43,6 @@ public class BuscaImagemGatoConfigurationImplTest {
 		String urlExpect = getUrlExpect(expand);
 
 		assertEquals(urlExpect, url);
-
 	}
 
 	private String getUrlExpect(Map<String, String> expand) {
