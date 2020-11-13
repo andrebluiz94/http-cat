@@ -31,21 +31,18 @@ public class BuscaImagemGatoConfigurationImplTest {
 	private BuscaImagemGatoConfiguration configuration;
 
 	@Test
-	void deveConfigurarUrlComSucesso() {
+	public void deveConfigurarUrlComSucesso() {
 
 		Map<String, String> expand  = new HashMap<>();
-		expand.put("breed_id", "cat");
-		expand.put("category_ids", "1");
+		expand.put("breed_id", "");
+		expand.put("category_ids", "");
 
 		configuration.setUrlParams(expand);
 		String url = configuration.getUrl();
 
 		String urlExpect = getUrlExpect(expand);
 
-		String regex = String.format("^%s$", urlExpect);
-		boolean resultRegex = url.matches(regex);
-
-		assertTrue(resultRegex);
+		assertEquals(urlExpect, url);
 
 	}
 

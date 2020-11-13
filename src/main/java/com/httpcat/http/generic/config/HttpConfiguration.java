@@ -1,4 +1,4 @@
-package com.httpcat.generic.config;
+package com.httpcat.http.generic.config;
 
 import org.springframework.http.HttpHeaders;
 

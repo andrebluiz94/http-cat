@@ -1,7 +1,7 @@
-package com.httpcat.generic.client;
+package com.httpcat.http.generic.client;
 
-import com.httpcat.generic.config.HttpConfiguration;
-import com.httpcat.generic.expcetion.GetResponseException;
+import com.httpcat.http.generic.config.HttpConfiguration;
+import com.httpcat.http.generic.expcetion.GetResponseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

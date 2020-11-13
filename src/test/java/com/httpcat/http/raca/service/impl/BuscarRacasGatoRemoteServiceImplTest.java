@@ -101,7 +101,7 @@ public class BuscarRacasGatoRemoteServiceImplTest {
 
 	@Test
 	@DisplayName("Deve retornar error se a api cats estiver com problema")
-	public void deveRetornarErrorAoBuscarNaAPICats() throws JsonProcessingException {
+	public void deveRetornarErrorAoBuscarNaAPICats() {
 
 		BDDMockito.when(buscarRacasGatoConfiguration.getUrl())
 				.thenReturn(getUrl());

@@ -1,19 +1,22 @@
 package com.httpcat.http.GetCatImagem.service;
 
 import com.httpcat.Entity.Cat;
-import com.httpcat.generic.client.AbstractGetClient;
+import com.httpcat.http.generic.client.AbstractGetClient;
 import com.httpcat.http.GetCatImagem.config.BuscaImagemGatoConfiguration;
 import com.httpcat.http.GetCatImagem.dto.RequestGatoImagem;
 import com.httpcat.http.GetCatImagem.dto.ResponseRacaGatoImagem;
 import com.httpcat.repository.RacasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 @Service
 public class BuscaImagemGatoServiceImpl
@@ -37,9 +40,18 @@ public class BuscaImagemGatoServiceImpl
 
 		request.getExpand().put("raca", "sss");
 		allCats.forEach(cat -> {
+			ResponseRacaGatoImagem[] response;
+
 			request.getExpand().replace("raca", cat.getId());
 			this.configuration.setUrlParams(request.getExpand());
-			ResponseRacaGatoImagem[] response = getImagemRaca().join().getBody();
+
+			CompletableFuture<ResponseEntity<ResponseRacaGatoImagem[]>> imagemRaca = getImagemRaca();
+			try {
+				response = imagemRaca.join().getBody();
+			}catch (CompletionException e){
+				throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);
+			}
+
 			ArrayList<ResponseRacaGatoImagem> responseRacaGatoImagems = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response)));
 			if (!responseRacaGatoImagems.isEmpty()) {
 				Optional<ResponseRacaGatoImagem> responseRacaGatoImagem = Optional.ofNullable(responseRacaGatoImagems.get(0));

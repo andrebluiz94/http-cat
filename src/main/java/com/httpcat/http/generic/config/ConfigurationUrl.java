@@ -1,6 +1,6 @@
-package com.httpcat.generic.config;
+package com.httpcat.http.generic.config;
 
-import com.httpcat.generic.expcetion.UrlBuilderException;
+import com.httpcat.http.generic.expcetion.UrlBuilderException;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,7 @@
 package com.httpcat.http.raca.config;
 
 
-import com.httpcat.generic.config.ConfigurationUrl;
+import com.httpcat.http.generic.config.ConfigurationUrl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;

@@ -44,4 +44,5 @@ public class BreedLocalControllerImpl {
     public ResponseEntity<List<Cat>> getRacaByTemperamento(@RequestParam List<String> nomes) {
         return service.getCatsList(nomes);
     }
+
 }

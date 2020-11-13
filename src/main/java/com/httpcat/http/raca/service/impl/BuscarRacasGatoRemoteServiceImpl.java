@@ -1,7 +1,7 @@
 package com.httpcat.http.raca.service.impl;
 
 import com.httpcat.Entity.Cat;
-import com.httpcat.generic.client.AbstractGetClient;
+import com.httpcat.http.generic.client.AbstractGetClient;
 import com.httpcat.http.raca.config.BuscarRacasGatoConfiguration;
 import com.httpcat.http.raca.dto.ResponseRacaGato;
 import com.httpcat.http.raca.service.BuscarRacasGatoRemoteService;
@@ -17,8 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-
-import static java.util.Objects.requireNonNull;
 
 @Service
 public class BuscarRacasGatoRemoteServiceImpl
@@ -65,11 +63,6 @@ public class BuscarRacasGatoRemoteServiceImpl
 		return buscar;
 	}
 
-
-	public List<ResponseRacaGato> buscarImagens() {
-		ResponseRacaGato[] responseRacaGato = this.get().getBody();
-		return new ArrayList<>(Arrays.asList(requireNonNull(responseRacaGato)));
-	}
 
 	@Async
 	public CompletableFuture<ResponseRacaGato[]> getCatsAsync() {

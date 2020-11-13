@@ -9,9 +9,7 @@ import com.httpcat.http.GetCatImagem.dto.ResponseRacaGatoImagem;
 import com.httpcat.http.GetCatImagem.dto.categorioes;
 import com.httpcat.http.raca.dto.ResponseRacaGato;
 import com.httpcat.repository.RacasRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockserver.client.MockServerClient;
@@ -30,10 +28,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.Parameter.param;
 
@@ -95,7 +96,36 @@ public class BuscaImagemGatoServiceImplTest {
 						.withBody(getReturn));
 
 		List<Optional<ResponseRacaGatoImagem>> buscar = service.buscar(getRequest());
-		System.out.println(buscar.get(0).get());
+		ResponseRacaGatoImagem responseRacaGatoImagem = buscar.get(0).get();
+		ResponseRacaGatoImagem imagemGatosEntity = getImagensGatos().get(0);
+
+		Assertions.assertEquals(responseRacaGatoImagem.getUrl(), imagemGatosEntity.getUrl());
+		Assertions.assertEquals(responseRacaGatoImagem.getIdRaca(), imagemGatosEntity.getIdRaca());
+		Assertions.assertEquals(responseRacaGatoImagem.getCategoria().get(0).getNome(),
+				imagemGatosEntity.getCategoria().get(0).getNome());
+	}
+
+	@Test
+	@DisplayName("Deve retornar error se a api cats estiver com problema")
+	public void deveRetornarErrorAoBuscarNaAPICats() {
+
+		BDDMockito.when(configuration.getUrl())
+				.thenReturn(getUrlBuilder().toUriString());
+
+		BDDMockito.when(configuration.buildHeadersAuthentication())
+				.thenReturn(getheaders());
+
+
+		BDDMockito.when(repository.findAll())
+				.thenReturn(getCatList());
+
+		mockServer.when(getResquestExpect())
+				.respond(HttpResponse.response()
+						.withStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
+
+		ResponseStatusException internalError = assertThrows(ResponseStatusException.class, () -> service.buscar(getRequest()));
+		assertThat(internalError).isInstanceOf(ResponseStatusException.class);
 	}
 
 	public List<ResponseRacaGatoImagem> getImagensGatos(){
