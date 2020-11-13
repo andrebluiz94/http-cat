@@ -27,6 +27,7 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.4.200</version>
+			<scope>runtime</scope>
 		</dependency>
 		<!--H2 END-->
 
@@ -111,39 +112,21 @@
 			<artifactId>validation-api</artifactId>
 		</dependency>
 
-		<!--PI test-->
-		<dependency>
-			<groupId>org.pitest</groupId>
-			<artifactId>pitest-maven</artifactId>
-			<version>1.5.2</version>
-		</dependency>
-		<!--END PITest-->
-
 	</dependencies>
 
 	<build>
 		<finalName>httpcat</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.13.0</version>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>2.3.5.RELEASE</version>
 			</plugin>
-			<!--PI Test-->
-			<plugin>
-				<groupId>org.pitest</groupId>
-				<artifactId>pitest-maven</artifactId>
-				<version>1.5.2</version>
-				<configuration>
-					<targetClasses>
-						<param>com.httpcat*</param>
-					</targetClasses>
-					<targetTests>
-						<param>com.httpcat*</param>
-					</targetTests>
-				</configuration>
-			</plugin>
-			<!--END PI Test-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -157,4 +140,27 @@
 		</plugins>
 	</build>
 
+	<reporting>
+		<plugins>
+			<!--	PMD		-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.13.0</version>
+			</plugin>
+			<!--	JACOCO		-->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
