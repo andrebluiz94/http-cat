@@ -34,6 +34,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.Parameter.param;
@@ -126,6 +127,37 @@ public class BuscaImagemGatoServiceImplTest {
 
 		ResponseStatusException internalError = assertThrows(ResponseStatusException.class, () -> service.buscar(getRequest()));
 		assertThat(internalError).isInstanceOf(ResponseStatusException.class);
+	}
+
+	@Test
+	@DisplayName("Deve buscar imagem de gatos")
+	void deveBuscaImagemGato() throws JsonProcessingException {
+
+		String getReturn = objectMapper.writeValueAsString(getImagensGatos());
+
+		BDDMockito.when(configuration.getUrl())
+				.thenReturn(getUrlBuilder().toUriString());
+
+		BDDMockito.when(configuration.buildHeadersAuthentication())
+				.thenReturn(getheaders());
+
+		mockServer.when(getResquestExpect())
+				.respond(HttpResponse.response()
+						.withStatusCode(HttpStatus.OK.value())
+						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.withBody(getReturn));
+
+		List<ResponseRacaGatoImagem> buscar = service.buscar();
+
+		assertNotNull(buscar);
+
+		ResponseRacaGatoImagem responseRacaGatoImagem = buscar.get(0);
+		ResponseRacaGatoImagem imagemGatosEntity = getImagensGatos().get(0);
+
+		Assertions.assertEquals(responseRacaGatoImagem.getUrl(), imagemGatosEntity.getUrl());
+		Assertions.assertEquals(responseRacaGatoImagem.getIdRaca(), imagemGatosEntity.getIdRaca());
+		Assertions.assertEquals(responseRacaGatoImagem.getCategoria().get(0).getNome(),
+				imagemGatosEntity.getCategoria().get(0).getNome());
 	}
 
 	public List<ResponseRacaGatoImagem> getImagensGatos(){
