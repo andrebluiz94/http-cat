@@ -18,18 +18,13 @@ public class BuscaImagemGatoConfigurationImpl extends ConfigurationUrl implement
     @Value("${cat.url.racas.path.imagem}")
     private String path;
 
-    private Map<String, String> params = new HashMap<>();
+    private final Map<String, String> params = new HashMap<>();
 
     @Override
     public void setUrlParams(Map<String, String> expand) {
         params.put("breed_id", expand.get("raca"));
         params.put("category_ids", expand.get("categoria"));
-    }
-
-    @Override
-    public String getUrl() {
-        this.url = buildUrl();
-        return super.getUrl();
+        this.url = this.buildUrl();
     }
 
     private String buildUrl(){

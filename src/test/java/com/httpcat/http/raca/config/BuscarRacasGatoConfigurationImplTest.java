@@ -36,4 +36,8 @@ public class BuscarRacasGatoConfigurationImplTest {
 		boolean matches = url.matches(regex);
 		assertTrue(matches);
 	}
+	@Test
+	void deveRetonarQuandoUrlEstiverVazia() {
+
+	}
 }
