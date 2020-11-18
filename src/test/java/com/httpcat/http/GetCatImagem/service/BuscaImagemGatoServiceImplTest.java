@@ -34,8 +34,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.Parameter.param;
 
@@ -253,7 +252,7 @@ public class BuscaImagemGatoServiceImplTest {
 
 		return request()
 				.withMethod(HttpMethod.GET.toString())
-				.withPath(this.path)
+				.withPath(path)
 				.withQueryStringParameters(new Parameters(
 						param("breed_id",getCat().getName()),
 						param("category_ids",getCat().getIdCat().toString()),
@@ -262,5 +261,29 @@ public class BuscaImagemGatoServiceImplTest {
 				).withKeyMatchStyle(KeyMatchStyle.SUB_SET))
 				.withHeader(HttpHeaders.AUTHORIZATION, AUTHORIZATION)
 				.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+	}
+
+	@Test
+	@DisplayName("Se a resposta não estiver vazio deve adicionar ao array de resposta")
+	public void verificaSeEstaVazio() throws JsonProcessingException {
+		List<ResponseRacaGatoImagem> imagensGatos = null;
+		String getReturn = objectMapper.writeValueAsString(imagensGatos);
+		ArrayList<Optional<ResponseRacaGatoImagem>> sizeArrayExpected = new ArrayList<>();
+
+		BDDMockito.when(configuration.getUrl())
+				.thenReturn(getUrlBuilder().toUriString());
+
+		BDDMockito.when(configuration.buildHeadersAuthentication())
+				.thenReturn(getheaders());
+
+		mockServer.when(getResquestExpect())
+				.respond(HttpResponse.response()
+						.withStatusCode(HttpStatus.OK.value())
+						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.withBody(getReturn));
+
+		List<Optional<ResponseRacaGatoImagem>> buscar = service.buscar(getRequest());
+
+		assertEquals(sizeArrayExpected.size(),buscar.size());
 	}
 }

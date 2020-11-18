@@ -5,6 +5,7 @@ import com.httpcat.http.raca.service.BuscarRacasGatoRemoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,15 +24,15 @@ public class BreedRemoteController {
         this.service = service;
     }
 
-    @GetMapping("/racas")
+    @GetMapping
     @Cacheable("todosGatosRemotos")
     public List<ResponseRacaGato> getRacas() {
         return service.buscar();
     }
 
-    @PostMapping("/racas")
+    @PostMapping
     @CacheEvict(cacheNames = {"todosGatosRemotos", "todosGatos"})
-    public List<ResponseRacaGato> pupolarBaseDadosComGatos(){
+    public ResponseEntity<List<ResponseRacaGato>> pupolarBaseDadosComGatos(){
         return service.buscaESalva();
     }
 

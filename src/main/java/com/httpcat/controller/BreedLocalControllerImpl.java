@@ -35,14 +35,14 @@ public class BreedLocalControllerImpl {
         return service.getCatByName(nome);
     }
 
-    @GetMapping("/r")
+    @GetMapping("/temperamento")
     public ResponseEntity<List<Cat>> getRacaByTemperamento(@RequestParam String temperamento) {
         return service.getCatByTemperamento(temperamento);
     }
 
-    @GetMapping("racas")
-    public ResponseEntity<List<Cat>> getRacaByTemperamento(@RequestParam List<String> nomes) {
-        return service.getCatsList(nomes);
+    @GetMapping("/nomes")
+    public ResponseEntity<List<Cat>> getRacaByNomes(@RequestParam List<String> lista) {
+        return service.getCatsList(lista);
     }
 
 }

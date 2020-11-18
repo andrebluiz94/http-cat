@@ -28,7 +28,7 @@ public class BuscarGatosLocalServiceImpl implements BuscarGatosLocalService {
 
     @Override
     public ResponseEntity<List<Cat>> getCats() {
-        List<Cat> catList = Optional.of(repository.findAll())
+        List<Cat> catList = Optional.ofNullable(repository.findAll())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
         return ResponseEntity.ok(catList);
@@ -37,7 +37,7 @@ public class BuscarGatosLocalServiceImpl implements BuscarGatosLocalService {
     @Override
     public ResponseEntity<Optional<Cat>> getCatByName(String nome) {
         Optional<Cat> cat = Optional.ofNullable(repository.findByName(nome))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
         return ResponseEntity.ok(cat);
     }
@@ -45,23 +45,24 @@ public class BuscarGatosLocalServiceImpl implements BuscarGatosLocalService {
     @Override
     public ResponseEntity<List<Cat>> getCatByTemperamento(String temperamento) {
         String regex = String.format(".*%s.*", temperamento);
-        List<Cat> catList = Optional.of(
-                repository
-                        .findAll()
-                        .stream()
-                        .filter(raca -> raca.getTemperament().matches(regex))
-                        .collect(Collectors.toList())).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return ResponseEntity.ok(catList);
+        List<Cat> catList = Optional.ofNullable(repository.findAll())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT));
+
+        List<Cat> listaResult = catList
+                .stream()
+                .filter(raca -> raca.getTemperament().matches(regex))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(listaResult);
     }
 
     @Override
     public ResponseEntity<List<Cat>> getCatsList(List<String> racas) {
-        List<Cat> catList = Optional.of(
-                repository
-                        .findAll()
-                        .stream()
-                        .filter(cat -> racas.contains(cat.getName()))
-                        .collect(Collectors.toList())).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return ResponseEntity.ok(catList);
+        List<Cat> catList = Optional.ofNullable(repository.findAll())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT));
+
+        List<Cat> catResult = catList.stream()
+                .filter(cat -> racas.contains(cat.getName()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(catResult);
     }
 }

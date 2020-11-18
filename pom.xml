@@ -161,6 +161,11 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>com.httpcat.config.*</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -174,6 +179,11 @@
 						<version>0.12</version>
 					</dependency>
 				</dependencies>
+				<configuration>
+					<excludedClasses>
+						<excludedClass>com.httpcat.config.*</excludedClass>
+					</excludedClasses>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -224,4 +224,55 @@ public class BuscarGatosLocalServiceImplTest {
 		cat.setIdCat(1L);
 		return cat;
 	}
+
+	@Test
+	@DisplayName("Deve retornar 204 quando buscar na base de dados e não encontrar todos os gatos")
+	void deveRetonarStatus204QuandoNaoTiverConteudoNaBaseDados() {
+		BDDMockito.when(repository.findAll())
+				.thenReturn(null);
+
+
+		ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.getCats());
+		assertThat(responseStatusException).isInstanceOf(ResponseStatusException.class);
+		assertEquals(HttpStatus.NO_CONTENT ,responseStatusException.getStatus());
+	}
+
+	@Test
+	@DisplayName("Deve retornar 204 quando buscar na base de dados quando buscar pelo nome")
+	void deveRetonarStatus204QuandoNaoTiverConteudoNaBaseDadosQuandoBuscarPeloNome() {
+		String anyString = "aloha";
+		BDDMockito.when(repository.findByName(Mockito.anyString()))
+				.thenReturn(null);
+
+
+		ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.getCatByName(anyString));
+		assertThat(responseStatusException).isInstanceOf(ResponseStatusException.class);
+		assertEquals(HttpStatus.NO_CONTENT ,responseStatusException.getStatus());
+	}
+
+	@Test
+	@DisplayName("Deve retornar 204 quando buscar na base de dados quando buscar pelo temperamento")
+	void deveRetonarStatus204QuandoNaoTiverConteudoNaBaseDadosQuandoBuscarPeloTemperamento() {
+		String anyString = "aloha";
+		BDDMockito.when(repository.findAll())
+				.thenReturn(null);
+
+		ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.getCatByTemperamento(anyString));
+		assertThat(responseStatusException).isInstanceOf(ResponseStatusException.class);
+		assertEquals(HttpStatus.NO_CONTENT ,responseStatusException.getStatus());
+	}
+
+	@Test
+	@DisplayName("Deve retornar 204 quando buscar na base de dados quando buscar pelo lista de racas")
+	void deveRetonarStatus204QuandoNaoTiverConteudoNaBaseDadosQuandoBuscarPorUmaListaRacas() {
+		List<String> catList = new ArrayList<>();
+		catList.add("aloha");
+		catList.add("aloha");
+		BDDMockito.when(repository.findAll())
+				.thenReturn(null);
+
+		ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.getCatsList(catList));
+		assertThat(responseStatusException).isInstanceOf(ResponseStatusException.class);
+		assertEquals(HttpStatus.NO_CONTENT ,responseStatusException.getStatus());
+	}
 }

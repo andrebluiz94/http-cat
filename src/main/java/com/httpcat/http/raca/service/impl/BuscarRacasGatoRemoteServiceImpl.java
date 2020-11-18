@@ -9,6 +9,7 @@ import com.httpcat.mapper.MapperBase;
 import com.httpcat.repository.RacasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.stream.Collectors;
 
 @Service
 public class BuscarRacasGatoRemoteServiceImpl
@@ -29,6 +31,9 @@ public class BuscarRacasGatoRemoteServiceImpl
 	MapperBase<ResponseRacaGato, Cat> mapperBase;
 
 	@Autowired
+	MapperBase<Cat, ResponseRacaGato> mapperBaseCatParaResponse;
+
+	@Autowired
 	public BuscarRacasGatoRemoteServiceImpl(RestTemplate restTemplate, BuscarRacasGatoConfiguration configuration, RacasRepository repository) {
 		super(restTemplate, configuration);
 		this.repository = repository;
@@ -37,30 +42,36 @@ public class BuscarRacasGatoRemoteServiceImpl
 	@Override
 	public List<ResponseRacaGato> buscar() {
 
+		ResponseRacaGato[] responseRacaGatos = null;
 		CompletableFuture<ResponseRacaGato[]> completableFuture = getCatsAsync();
-		ResponseRacaGato[] responseRacaGatoes;
 		try {
-			responseRacaGatoes = completableFuture.join();
+			responseRacaGatos = completableFuture.join();
 		} catch (CompletionException e) {
 			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);
 		}
 
 		List<ResponseRacaGato> catList = new ArrayList<>();
-		Collections.addAll(catList, responseRacaGatoes);
+		Collections.addAll(catList, responseRacaGatos);
 
 		return catList;
 	}
 
 	@Override
-	public List<ResponseRacaGato> buscaESalva() {
+	public ResponseEntity<List<ResponseRacaGato>> buscaESalva() {
 		List<ResponseRacaGato> buscar = buscar();
 		List<Cat> catList = new LinkedList<>();
 		buscar.parallelStream().forEach(responseRacaGato -> {
 			Cat map = mapperBase.map(responseRacaGato);
 			catList.add(map);
 		});
-		Optional.of(repository.saveAll(catList)).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
-		return buscar;
+		List<Cat> catListSaved = Optional.ofNullable(repository.saveAll(catList))
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+
+		List<ResponseRacaGato> response = catListSaved.stream()
+				.map(gato -> mapperBaseCatParaResponse.map(gato))
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(response);
 	}
 
 

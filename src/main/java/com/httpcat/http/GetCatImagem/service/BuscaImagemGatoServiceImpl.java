@@ -37,11 +37,10 @@ public class BuscaImagemGatoServiceImpl
 	public List<Optional<ResponseRacaGatoImagem>> buscar(RequestGatoImagem request) {
 		List<Cat> allCats = repository.findAll();
 		List<Optional<ResponseRacaGatoImagem>> arrayList = new ArrayList<>();
-
-		request.getExpand().put("raca", "sss");
 		allCats.forEach(cat -> {
 			ResponseRacaGatoImagem[] response;
 
+			request.getExpand().put("raca", "sss");
 			request.getExpand().replace("raca", cat.getId());
 			this.configuration.setUrlParams(request.getExpand());
 
@@ -58,7 +57,6 @@ public class BuscaImagemGatoServiceImpl
 				arrayList.add(responseRacaGatoImagem);
 			}
 		});
-
 		return arrayList;
 	}
 

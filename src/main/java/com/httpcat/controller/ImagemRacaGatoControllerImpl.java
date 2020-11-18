@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v2")
+@RequestMapping("/api/v2/imagem")
 public class ImagemRacaGatoControllerImpl {
 
 
@@ -32,7 +32,7 @@ public class ImagemRacaGatoControllerImpl {
 		return service.buscar(request);
 	}
 
-	@GetMapping("/imagem")
+	@GetMapping
 	public List<ResponseRacaGatoImagem> getImagem() {
 		return service.buscar();
 	}

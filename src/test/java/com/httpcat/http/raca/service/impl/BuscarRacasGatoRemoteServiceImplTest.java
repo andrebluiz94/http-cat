@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.httpcat.Entity.Cat;
 import com.httpcat.http.raca.config.BuscarRacasGatoConfiguration;
 import com.httpcat.http.raca.dto.ResponseRacaGato;
+import com.httpcat.http.raca.mapper.MapperCatEntityParaResponseRacaGato;
 import com.httpcat.http.raca.mapper.MapperResponseRacaGatoParaEntityCat;
 import com.httpcat.http.raca.service.BuscarRacasGatoRemoteService;
 import com.httpcat.repository.RacasRepository;
@@ -19,10 +20,7 @@ import org.mockserver.model.RequestDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,8 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.model.HttpRequest.request;
 
 @ExtendWith(SpringExtension.class)
@@ -41,7 +38,8 @@ import static org.mockserver.model.HttpRequest.request;
 		RestTemplate.class,
 		ObjectMapper.class,
 		BuscarRacasGatoRemoteServiceImpl.class,
-		MapperResponseRacaGatoParaEntityCat.class
+		MapperResponseRacaGatoParaEntityCat.class,
+		MapperCatEntityParaResponseRacaGato.class
 })
 public class BuscarRacasGatoRemoteServiceImplTest {
 
@@ -140,19 +138,30 @@ public class BuscarRacasGatoRemoteServiceImplTest {
 						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 						.withBody(catList));
 
-		ResponseRacaGato buscarResultado = service.buscar().get(0);
+		List<ResponseRacaGato> buscarResultado = service.buscar();
+		ResponseRacaGato buscarResultadoUm = buscarResultado.get(0);
+		ResponseRacaGato buscarResultadoGatoDois = buscarResultado.get(1);
+
 		ResponseRacaGato contentCat = getContentCat().get(0);
-		assertEquals(contentCat.getCatID(), buscarResultado.getCatID());
-		assertEquals(contentCat.getNome(), buscarResultado.getNome());
-		assertEquals(contentCat.getOrigem(), buscarResultado.getOrigem());
-		assertEquals(contentCat.getTemperamento(), buscarResultado.getTemperamento());
+		ResponseRacaGato contentCatDois = getContentCat().get(1);
+
+		assertNotNull(buscarResultado);
+		assertEquals(contentCat.getCatID(), buscarResultadoUm.getCatID());
+		assertEquals(contentCat.getNome(), buscarResultadoUm.getNome());
+		assertEquals(contentCat.getOrigem(), buscarResultadoUm.getOrigem());
+		assertEquals(contentCat.getTemperamento(), buscarResultadoUm.getTemperamento());
+
+		assertEquals(contentCatDois.getTemperamento(), buscarResultadoGatoDois.getTemperamento());
+		assertEquals(contentCatDois.getCatID(), buscarResultadoGatoDois.getCatID());
+		assertEquals(contentCatDois.getOrigem(), buscarResultadoGatoDois.getOrigem());
+		assertEquals(contentCatDois.getNome(), buscarResultadoGatoDois.getNome());
 	}
 
 	@Test
 	@DisplayName("Deve retornar error ao salvar no banco de dados")
 	public void deveRetornarErrorSalvar() throws JsonProcessingException {
 		String catList = objectMapper.writeValueAsString(getContentCat());
-		List<Cat> cats = new ArrayList<>();
+		List<Cat> cats = null;
 		BDDMockito.when(buscarRacasGatoConfiguration.getUrl())
 				.thenReturn(getUrl());
 
@@ -160,15 +169,17 @@ public class BuscarRacasGatoRemoteServiceImplTest {
 				.thenReturn(getheaders());
 
 		BDDMockito.when(repository.saveAll(Mockito.any()))
-				.thenThrow(new InternalError());
+				.thenReturn(cats);
 
 		mockServer.when(getResquestExpect())
 				.respond(HttpResponse.response()
 						.withStatusCode(HttpStatus.OK.value())
 						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 						.withBody(catList));
-		InternalError internalError = assertThrows(InternalError.class, () -> service.buscaESalva());
-		assertThat(internalError).isInstanceOf(InternalError.class);
+		ResponseStatusException response = assertThrows(ResponseStatusException.class, () -> service.buscaESalva());
+
+		assertThat(response).isInstanceOf(ResponseStatusException.class);
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatus());
 	}
 
 	@AfterEach
@@ -183,6 +194,7 @@ public class BuscarRacasGatoRemoteServiceImplTest {
 		gato.setCatID("gat");
 		gato.setOrigem("RJ");
 		gato.setTemperamento("Active, calm");
+		catList.add(gato);
 		catList.add(gato);
 		return catList;
 	}
@@ -211,5 +223,28 @@ public class BuscarRacasGatoRemoteServiceImplTest {
 				.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 	}
 
+	@Test
+	@DisplayName("Deve retornar erro ao não conseguir salvar os gatos na base de dados")
+	public void deveRetornarErrorNaoSalveCat() throws JsonProcessingException {
+		String catList = objectMapper.writeValueAsString(getContentCat());
+		List<Cat> cats = new ArrayList<>();
+		BDDMockito.when(buscarRacasGatoConfiguration.getUrl())
+				.thenReturn(getUrl());
 
+		BDDMockito.when(buscarRacasGatoConfiguration.buildHeadersAuthentication())
+				.thenReturn(getheaders());
+
+		BDDMockito.when(repository.saveAll(Mockito.any()))
+				.thenReturn(cats);
+
+		mockServer.when(getResquestExpect())
+				.respond(HttpResponse.response()
+						.withStatusCode(HttpStatus.OK.value())
+						.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+						.withBody(catList));
+
+		List<ResponseRacaGato> listResponseEntity = service.buscaESalva().getBody();
+		assertEquals(cats.size(),listResponseEntity.size());
+
+	}
 }
