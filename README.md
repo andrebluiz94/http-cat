@@ -18,11 +18,11 @@ funcionalidade. Porém quando começamos a pensar em escalabilidade isso começa
 devido a isso utilizamos testes automatizados para fazer com que o processo de não só testarmos um aplicação        
 como também validar se nossas funcionalidade adicionais interferiram com diretamente em outro ponto do app.
 
-###Jacoco
+ ### Jacoco
 Para entendermos o quando da aplicação está coberta por testes podemos utilizar o Jacoco. Em nosso contexto a       
 aplicação está com uma cobertura de 97% com base em suas linhas de codigo.
 
-###PITest
+ ### PITest
 Quando começamos a tentar entender sobre a qualidade de testes podemos utilizar o Pitest, que é um plugin para      
 testes de mutação, ele fará diversas alterações no código base com intenção de quebrar o teste. Quando o teste      
 quebra ele mata o mutante gerado validando que o teste que fizemos para situação foi efetivo.
