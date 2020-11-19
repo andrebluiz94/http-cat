@@ -37,7 +37,7 @@ Para escolher o perfil corretamente acesse a pasta "env" na raiz do projeto,    
  - [x] Docker (opcional)
  - [x] Docker-compose (opcional)
  - [x] Maven (opcional)
- ###Variaveis de amabiente para definir perfis
+ ### Variaveis de amabiente para definir perfis
 ```
 #perfil desenvolvimento
 SPRING_PROFILES_ACTIVE=dev
