@@ -3,6 +3,7 @@ package com.httpcat.controller;
 import com.httpcat.http.GetCatImagem.dto.RequestGatoImagem;
 import com.httpcat.http.GetCatImagem.dto.ResponseRacaGatoImagem;
 import com.httpcat.http.GetCatImagem.service.BuscaImagemGatoService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class ImagemRacaGatoControllerImpl {
 	}
 
 	@GetMapping("search")
+	@ApiOperation(value = "Retorna uma lista de  link e detalhes sobre a raça do gato a partir dos parametros passados na url")
 	public List<Optional<ResponseRacaGatoImagem>> getImagem(@RequestParam Map<String, String> params){
 		RequestGatoImagem request = new RequestGatoImagem();
 		request.setExpand(params);
@@ -33,6 +35,7 @@ public class ImagemRacaGatoControllerImpl {
 	}
 
 	@GetMapping
+	@ApiOperation(value = "Retorna uma lista de,  link e detalhes sobre a raça de um gato")
 	public List<ResponseRacaGatoImagem> getImagem() {
 		return service.buscar();
 	}

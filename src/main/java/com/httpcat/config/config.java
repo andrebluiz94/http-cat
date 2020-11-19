@@ -49,5 +49,4 @@ public class config extends CachingConfigurerSupport implements AsyncConfigurer 
 				new ConcurrentMapCache("todosGatos")));
 		return cacheManager;
 	}
-
 }
