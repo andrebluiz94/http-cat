@@ -80,6 +80,6 @@ docker-compose build
 #Para subir o container e suas imagens
 docker-compose up
 ```
-Este comando utilizado ``docker-compose up``` vai subir um container redis, outro com postgres e por        
+Este comando utilizado ```docker-compose up``` vai subir um container redis, outro com postgres e por        
 útilmo vai a aplicação por ela depender dessas duas imagens. 
   

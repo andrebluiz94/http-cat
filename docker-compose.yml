@@ -13,10 +13,11 @@ services:
     networks:
       - cat-rede
     depends_on:
-      - "redis"
-      - "db"
+      - redis
+      - db
   redis:
     image: library/redis:alpine
+    restart: always
     networks:
       - cat-rede
   db:
@@ -26,6 +27,15 @@ services:
       - cat-rede
     env_file:
       - ./env/postgres.env
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8095:8080
+    depends_on:
+      - db
+    networks:
+      - cat-rede
 networks:
   cat-rede:
     driver: bridge

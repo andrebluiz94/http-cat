@@ -191,6 +191,13 @@
 						<version>0.12</version>
 					</dependency>
 				</dependencies>
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<goals>-->
+<!--							<goal>report</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
 				<configuration>
 					<excludedClasses>
 						<excludedClass>com.httpcat.config.*</excludedClass>

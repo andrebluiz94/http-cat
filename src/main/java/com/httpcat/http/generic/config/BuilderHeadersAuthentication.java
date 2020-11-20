@@ -14,7 +14,7 @@ public abstract class BuilderHeadersAuthentication implements HttpConfiguration{
 	@Override
 	public HttpHeaders buildHeadersAuthentication() {
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.AUTHORIZATION, KEY_AUTHORIZATION);
+		headers.add(HttpHeaders.AUTHORIZATION, KEY_AUTHORIZATION.trim());
 		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		return headers;
 	}
